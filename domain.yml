@@ -1,0 +1,311 @@
+version: "3.1"
+
+config:
+    store_entities_as_slots: true
+session_config:
+    session_expiration_time: 60
+    carry_over_slots_to_new_session: true
+
+intents:
+  - start
+  - greet
+  - goodbye
+  - mood_great
+  - mood_unhappy
+  - affirm
+  - deny
+  - describe_monster
+  - get_monster_stats
+  - reset
+  - character_creation
+  - select_race
+  - select_class
+  - ask_about_race
+  - ask_about_class
+  - talk_to_npc
+  - continue_talking
+  - select_item
+  - explore_city
+  - go_to_adventure
+  - return_to_post_creation
+  - custom_input_prompt
+  - continue_fighting
+  - cast_spell
+  - select_spell
+  - character_status
+  - spell_details
+  - help
+
+actions:
+  - utter_start
+  - action_describe_monster
+  - action_get_monster_stats
+  - action_reset
+  - action_character_creation
+  - action_select_race
+  - action_select_class
+  - action_search_race
+  - action_talk_to_npc
+  - action_select_item
+  - action_continue_talking
+  - action_search_class
+  - action_explore_city
+  - action_ask_for_custom_input
+  - action_start_combat
+  - action_continue_fighting
+  - action_cast_spell
+  - action_process_spell
+  - action_character_status
+  - action_spell_details
+  - action_help
+  
+entities:
+  - monster_name
+  - selected_race
+  - selected_class
+  - stats_1
+  - stats_2
+  - stats_3
+  - level
+  - gold
+  - inventory
+  - spells
+  - merchant_items
+  - item_name
+  - item_cost
+  - selected_city
+  - combat_difficulty
+  - defeat_counter
+  - selected_spell
+  - remaining_spells
+
+slots:
+  monster_name:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: monster_name 
+  race_list:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: from_text
+  class_list:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: from_text
+  selected_race:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: selected_race
+  selected_class:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: selected_class
+  stats_1:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: stats_1    
+  stats_2:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: stats_2    
+  stats_3:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: stats_3                      
+  level:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: level      
+  inventory:
+    type: list
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: inventory
+  gold:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: gold
+  spells:
+    type: list
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: spells      
+  merchant_items:
+    type: list
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: merchant_items
+  item_name:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: item_name
+  item_cost:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: item_cost
+  selected_city:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: selected_city
+  selected_spell:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: selected_spell  
+  combat_difficulty:
+    type: float
+    influence_conversation: true 
+    mappings:
+      - type: from_entity
+        entity: combat_difficulty
+  defeat_counter:
+    type: float
+    initial_value: 0.0
+    influence_conversation: true 
+    mappings:
+      - type: from_entity
+        entity: defeat_counter  
+  remaining_spells:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: remaining_spells  
+
+responses:
+  utter_start:
+    - text: |
+        Welcome, adventurer! ⚔️
+        
+        I'm your Virtual Dungeon Master. With me, you can explore cities, talk to NPCs, battle dangerous monsters, and cast powerful spells.
+
+        To get started, type **/help** for a list of commands or just type **play** and begin your journey into a world full of danger, treasures, and magic. ✨
+  
+  utter_default_fallback:
+    - text: "Sorry, I didn't understand that. Can you rephrase?"
+
+  utter_greet:
+    - text: "Hi there adventurer! How can I assist you today?"
+
+  utter_happy:
+    - text: "That's fantastic to hear! Let's play the game then and keep enjoying your day! 😊"
+
+  utter_cheer_up:
+    - text: "I'm sorry to hear that. But don’t worry, things can get better. 🌈 You can try the game to have a little relax!"
+    - text: "I understand things can be tough. But every storm passes! 🌟 Why not play a bit to unwind?"
+    - text: "Don't lose hope, better days are ahead. 🌅 Let's try to have some fun and lift your spirits!"
+    - text: "I'm here for you. It’s okay to have bad days, but remember good ones are coming! 🌼 Want to relax with the game?"
+    - text: "Keep going, you're doing great even if it doesn't feel like it right now. 🌈 Let's play and feel a bit better."
+    - text: "You’re stronger than you think. 🌻 Sometimes a little distraction helps—ready to play a game?"
+    - text: "I’m sorry you’re feeling down, but even small steps can make a difference. 💪 Let’s try the game together!"
+    - text: "Things might be rough, but remember, the sun always rises. 🌞 Maybe a game can help clear your mind!"
+    - text: "Take a deep breath, and remember you’re not alone. 🌊 Let’s play a little to help you feel better."
+    - text: "Even when it rains, there’s always a rainbow afterward. 🌈 Want to take a break and play for a bit?"
+    - text: "I know it’s hard, but you’ve overcome tough moments before. 🌸 Let’s start the game and focus on positive vibes!"
+
+  utter_did_that_help:
+    - text: "Did this make you feel better?"
+
+  utter_offer_more_help:
+    - text: "I see. Why don't you give a try to the game to see if this will cheer you up?"
+    - text: "I understand. Maybe the game can be a nice way to take your mind off things. Want to give it a try?"
+    - text: "Hmm, I see where you’re coming from. Let’s see if playing the game can brighten your day a little."
+    - text: "Got it. Sometimes a fun distraction can help. How about we jump into the game for a while?"
+    - text: "I get it. Let’s see if we can lighten your mood by starting the game together."
+    - text: "It’s okay to feel this way. Why not take a break and see if the game can help you relax?"
+    - text: "That’s completely understandable. Would you like to give the game a try and take a moment for yourself?"
+    - text: "I see how you feel. Sometimes a little fun can help reset our mood. Ready to play the game?"
+    - text: "I get you. How about exploring the game for a while to ease your mind a bit?"
+    - text: "Understood. When you’re ready, the game can be a helpful break to uplift you."
+    - text: "Thanks for sharing. Let’s give the game a shot and see if it helps you feel better."
+
+  utter_alternative_help:
+    - text: "I can help suggest you relax, grab something to drink or eat and play the game with me! :D"
+    - text: "How about you take a moment to relax, have a snack, and join me in the game? 😊"
+    - text: "Let’s take a break! Grab your favorite drink, and let’s dive into the game together. 🎮"
+    - text: "Maybe a short break will help. Get comfortable, and we can start playing the game. 🍵"
+    - text: "Sometimes all you need is a pause. Relax, grab a bite, and let’s have fun in the game! 🎲"
+    - text: "Take a moment to unwind. A cup of tea, a snack, and the game could make things better! 🌟"
+    - text: "Relax, recharge, and let’s have fun with the game! Sometimes, that’s all you need. 🍪"
+    - text: "A small break can go a long way! Grab a drink, get cozy, and let’s enjoy the game. 🌼"
+    - text: "I suggest you sit back, have your favorite treat, and explore the game world with me! 🍫"
+    - text: "Let’s pause and enjoy the moment. Grab something tasty, and we’ll have fun playing the game! 🕹️"
+    - text: "Relax, breathe, and treat yourself to a good time. Join me for a fun session in the game! 🎮✨"
+  
+  utter_goodbye:
+    - text: "Take care! I'm always here if you need me again. 👋"
+    - text: "Goodbye! Hope to see you again soon. 😊"
+    - text: "Take care! Come back anytime. 🌟"
+    - text: "See you next time! 👋"
+    - text: "Farewell! Have a great day! 🌈"
+
+  utter_fight_explained:
+    - text: |
+        Now you will fight a monster, choosing from 3 different options:
+        
+        - Continue fighting - This will roll a 20 faces die in order to see if you win the combat or not.
+          To win you have to roll an equal or higher number of the difficulty. 
+          If you are a fighter, the difficulty will be reduced if you are strong enough.
+          If you are a spellcaster, you can cast spells to reduce the difficulty.
+
+        - Cast spell - This will present you the spell list associated with your character, if you are a spellcaster.
+          You can cast a maximum of 3 spells per combat before finishing your magic energies, so choose wisely!
+          You can also see what a spell can do by typing 'Tell me about the spell NAME-SPELL (e.g. Fireball)' 
+
+        - Run away - If you think the fight is too difficult to beat, you can always return to the city and try fighting another monster!  
+  utter_main_menu_explained:
+    - text: |
+        This is the Main Menu of the adventure, where you can do several things with your character. For example you can:
+        
+        - Talk with an NPC, a Non Playable Character, who will give you some info about the tales surrounding the city you are exploring.
+          The NPC could also be a Mechant who will sell you items that you could buy, given that you have enough gold :D.
+
+        - Explore the city, where you will uncover the misteries of the city you are in!.
+
+        - Go to Adventure, where you will fight a dangerous monster for the life. 
+          If you win, you'll receive a prize, according to the monster difficulty, which will grant you gold to buy more items. 
+          If you lose, you will not gain anything, but be careful: if you are defeated 3 times, you will lose your character and you will have to restart everything!
+        
+        You will discover the rest by playing!
+  utter_post_character_creation:
+    - text: "What do you want to do next?"
+      buttons:
+        - title: "Talk to NPC"
+          payload: "/talk_to_npc"
+        - title: "Explore the city"
+          payload: "/explore_city"
+        - title: "Go to adventure"
+          payload: "/go_to_adventure"    
+        - title: "Write your action"
+          payload: "/custom_input_prompt"
+
+  utter_ask_monster_name_for_stats:
+    - text: "Which monster's stats would you like to know about?"

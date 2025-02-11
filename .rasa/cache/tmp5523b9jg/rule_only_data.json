@@ -1,0 +1,8 @@
+{
+  "rule_only_slots": [
+    "monster_name",
+    "selected_class",
+    "selected_race"
+  ],
+  "rule_only_loops": []
+}

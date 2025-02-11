@@ -1,0 +1,20 @@
+{
+  "0": "ask_about_class",
+  "1": "ask_about_race",
+  "2": "cast_spell",
+  "3": "character_creation",
+  "4": "continue_fighting",
+  "5": "continue_talking",
+  "6": "custom_input_prompt",
+  "7": "describe_monster",
+  "8": "explore_city",
+  "9": "get_monster_stats",
+  "10": "go_to_adventure",
+  "11": "return_to_post_creation",
+  "12": "select_class",
+  "13": "select_item",
+  "14": "select_race",
+  "15": "select_spell",
+  "16": "stop",
+  "17": "talk_to_npc"
+}

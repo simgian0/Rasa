@@ -1,0 +1,242 @@
+version: "3.1"
+
+stories:
+- story: Welcome message on start
+  steps:
+  - intent: start
+  - action: utter_start
+
+- story: Reset story 
+  steps:
+  - intent: reset
+  - action: action_reset
+
+- story: Positive mood path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+  - intent: affirm
+  - action: utter_goodbye
+
+- story: Supportive path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: Repeated help attempt
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_offer_more_help
+  - action: utter_alternative_help
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: Quick positive interaction
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+  - intent: affirm
+  - action: utter_goodbye
+
+- story: Describe a monster
+  steps:
+  - intent: describe_monster
+  - action: action_describe_monster
+
+- story: Get monster stats
+  steps:
+  - intent: get_monster_stats
+  - action: utter_ask_monster_name_for_stats
+  - action: action_get_monster_stats  
+
+- story: Helping story
+  steps:
+  - intent: help
+  - action: action_help
+
+- story: Complete character creation and interaction
+  steps:
+    - intent: character_creation
+    - action: action_select_race
+    - slot_was_set:
+        - selected_race
+    - intent: select_class
+    - slot_was_set:
+        - selected_class
+    - action: action_character_creation
+    - action: utter_main_menu_explained
+    - action: utter_post_character_creation
+    - intent: talk_to_npc
+    - action: action_talk_to_npc
+    - intent: continue_talking
+    - action: action_continue_talking
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+    - intent: go_to_adventure
+    - action: utter_fight_explained
+    - action: action_start_combat
+    - intent: cast_spell
+    - action: action_cast_spell
+    - intent: select_spell
+    - action: action_process_spell
+    - intent: continue_fighting
+    - action: action_continue_fighting
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+
+- story: Complete character creation and monster description
+  steps:
+    - intent: character_creation
+    - action: action_select_race
+    - slot_was_set:
+        - selected_race
+    - intent: select_class
+    - slot_was_set:
+        - selected_class
+    - action: action_character_creation
+    - action: utter_main_menu_explained
+    - action: utter_post_character_creation
+    - intent: go_to_adventure
+    - action: utter_fight_explained
+    - action: action_start_combat
+    - intent: cast_spell
+    - action: action_cast_spell
+    - intent: select_spell
+    - action: action_process_spell
+    - intent: continue_fighting
+    - action: action_continue_fighting
+    - intent: describe_monster
+    - action: action_describe_monster
+    - intent: get_monster_stats
+    - action: action_get_monster_stats
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+
+- story: Full character creation, combat, and exploration flow
+  steps:
+    - intent: character_creation
+    - action: action_select_race
+    - slot_was_set:
+        - selected_race
+    - intent: select_class
+    - slot_was_set:
+        - selected_class
+    - action: action_character_creation
+    - action: utter_main_menu_explained
+    - action: utter_post_character_creation
+    - intent: go_to_adventure
+    - action: utter_fight_explained
+    - action: action_start_combat
+    - intent: continue_fighting
+    - action: action_continue_fighting
+    - intent: cast_spell
+    - action: action_cast_spell
+    - intent: select_spell
+    - action: action_process_spell
+    - intent: character_status
+    - action: action_character_status
+    - intent: explore_city
+    - action: action_explore_city
+    - intent: continue_talking
+    - action: action_continue_talking
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+    - intent: talk_to_npc
+    - action: action_talk_to_npc
+    - intent: continue_talking
+    - action: action_continue_talking
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+    - intent: go_to_adventure
+    - action: utter_fight_explained
+    - action: action_start_combat
+    - intent: continue_fighting
+    - action: action_continue_fighting
+    - intent: character_status
+    - action: action_character_status
+
+- story: City exploration and NPC interaction
+  steps:
+    - intent: explore_city
+    - action: action_explore_city
+    - intent: continue_talking
+    - action: action_continue_talking
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+    - intent: talk_to_npc
+    - action: action_talk_to_npc
+    - intent: continue_talking
+    - action: action_continue_talking
+
+- story: Spell management and help
+  steps:
+    - intent: character_creation
+    - action: action_select_race
+    - slot_was_set:
+        - selected_race
+    - intent: select_class
+    - slot_was_set:
+        - selected_class
+    - action: action_character_creation
+    - action: utter_main_menu_explained
+    - action: utter_post_character_creation
+    - intent: spell_details
+    - action: action_spell_details
+    - intent: help
+    - action: action_help
+
+- story: Multiple combat encounters
+  steps:
+    - intent: character_creation
+    - action: action_select_race
+    - slot_was_set:
+        - selected_race
+    - intent: select_class
+    - slot_was_set:
+        - selected_class
+    - action: action_character_creation
+    - action: utter_main_menu_explained
+    - action: utter_post_character_creation
+    - intent: go_to_adventure
+    - action: utter_fight_explained
+    - action: action_start_combat
+    - intent: continue_fighting
+    - action: action_continue_fighting
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+    - intent: go_to_adventure
+    - action: utter_fight_explained
+    - action: action_start_combat
+    - intent: continue_fighting
+    - action: action_continue_fighting
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+    - intent: go_to_adventure
+    - action: utter_fight_explained
+    - action: action_start_combat
+    - intent: continue_fighting
+    - action: action_continue_fighting
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+    - intent: go_to_adventure
+    - action: utter_fight_explained
+    - action: action_start_combat
+    - intent: continue_fighting
+    - action: action_continue_fighting
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation

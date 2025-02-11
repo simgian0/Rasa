@@ -1,0 +1,526 @@
+version: "3.1"
+
+nlu:
+
+- intent: start
+  examples: |
+    - /start
+    - start 
+    - begin 
+    - Let's go 
+
+- intent: greet
+  examples: |
+    - Hey there!
+    - Hi!
+    - Hello!
+    - Greetings!
+    - Good to see you!
+    - Hey!
+    - How are you?
+    - Morning!
+    - Nice to meet you!
+
+- intent: goodbye
+  examples: |
+    - Bye
+    - Goodbye
+    - See you later
+    - Farewell
+    - Catch you later
+    - I'm leaving
+    - Take care
+    - Have a nice day
+    - I’m off
+    - Talk to you soon
+    - See you next time
+    - See you around
+    - Later!
+    - Peace out
+    - I’m signing off
+
+- intent: mood_great
+  examples: |
+    - I'm feeling awesome!
+    - I feel good
+    - Everything is perfect.
+    - I'm having a fantastic day!
+    - Feeling great today.
+    - Couldn't be better!
+    - I'm so happy.
+    - Life is good!
+    - I'm doing amazing.
+    - Feeling on top of the world!
+
+- intent: mood_unhappy
+  examples: |
+    - I feel down.
+    - I'm not in a good mood.
+    - Feeling a bit low today.
+    - I'm having a bad day.
+    - I'm upset.
+    - Things aren't going well.
+    - I'm feeling miserable.
+    - Nothing seems right today.
+    - I'm really sad.
+
+- intent: affirm
+  examples: |
+    - Yes!
+    - Yeah
+    - Yea
+    - Ofc
+    - Absolutely.
+    - Definitely.
+    - Of course.
+    - Sure.
+    - Yes, that helps.
+    - That’s right.
+    - I agree.
+    - Thanks, that’s helpful.
+
+- intent: deny
+  examples: |
+    - No.
+    - Nope.
+    - I don’t think so.
+    - Not really.
+    - Doesn’t help.
+    - No, not this time.
+    - Sorry, but no.
+    - Not what I expected.
+    - It didn’t help.
+    
+- intent: custom_input_prompt
+  examples: |
+    - /custom_input_prompt
+    - custom_input_prompt
+    
+- intent: describe_monster
+  examples: |
+    - I want details about the monster [Zombie](monster_name)
+    - Give me a description of the monster [Goblin](monster_name)
+    - Tell me more about the monster [Adult Green Dragon](monster_name)
+    - What can you tell me about the monster [Androsphinx](monster_name)?
+    - Share the features of the monster [Young Red Dragon](monster_name)
+    - Describe the monster [Tarrasque](monster_name) in detail
+    - Can you describe the monster [Frost Giant](monster_name)?
+    - Share some details about the monster [Chimera](monster_name)
+    - Describe the monster [Aboleth](monster_name)
+    - Explain the features of the monster [Ancient Gold Dragon](monster_name)
+    - Describe the monster called [Yuan Ti Nightmare Speaker](monster_name)
+    - Tell me something about the monster [Swarm Of Poisonous Snakes](monster_name)
+    - Make a description of the monster [Spirit Naga](monster_name)
+    - Share details about the monster [Rakshasa](monster_name)
+    - What do you know about the monster [Gelatinous Cube](monster_name)?
+    - Explain the traits of the monster [Fire Elemental](monster_name)
+    - Tell me about the monster [Kraken](monster_name)
+    - Share the details of the monster [Ancient Silver Dragon](monster_name)
+    - Can you explain the features of the monster [Cloud Giant](monster_name)?
+    - Tell me something about the monster [Giant Constrictor Snake](monster_name)
+    - Describe the monster [Grey Ooze](monster_name)
+    - Explain the features of the monster [Twig Blight](monster_name)
+    - Explain the characteristics of the monster [Hill Giant](monster_name)
+    - Share the traits of the monster [Troll](monster_name)
+    - What do you know about the monster [Mimic](monster_name)?
+    - What do you know about the monster [Gelatinous Cube](monster_name)?
+    - Describe in detail the monster [Flind](monster_name)
+    - I want details about the monster [Fire Snake](monster_name)
+    - Give me a description of the monster [Goblin](monster_name)
+    - Tell me more about the monster [Pseudodragon](monster_name)
+    - What can you tell me about the monster [Gnoll](monster_name)?
+
+- intent: get_monster_stats
+  examples: |
+    - What are the stats of the monster [Vampire](monster_name)?
+    - Show me the statistics of the monster [Weasel](monster_name)
+    - Can you provide the monster [Red Dragon Wyrmling](monster_name)'s attributes?
+    - Tell me the stats of the monster [Skeleton](monster_name)
+    - Provide detailed statistics of the monster [Tarrasque](monster_name)
+    - What are the monster [Lich](monster_name)'s stats?
+    - Give me the stats for the monster [Swarm Of Poisonous Snakes](monster_name)
+    - Give me the stats for the monster [Spirit Naga](monster_name)
+    - Can you show the statistics of the monster [Rakshasa](monster_name)?
+    - Display the attributes of the monster [Swarm Of Rot Grubs](monster_name)
+    - Give me the statistics of the monster [Swarm Of Rot Grubs](monster_name)
+    - What are the stats of the monster [Yeti](monster_name)?
+    - Display the monster [Ancient Gold Dragon](monster_name)'s attributes
+    - Give me detailed statistics for the monster [Bronze Dragon Wyrmling](monster_name)
+    - What are the stats of the monster [Frost Giant](monster_name)?
+    - Tell me the monster [Mimic](monster_name)'s attributes
+    - Show the attributes of the monster [Troll](monster_name)
+    - Provide detailed statistics for the monster [Wyvern](monster_name)
+    - Tell me the monster [Gelatinous Cube](monster_name)'s stats
+    - Tell me the attributes of the monster [Kraken](monster_name)
+    - Provide information about the monster [Iron Golem](monster_name)'s attributes
+    - Can you show me the stats of the monster [Hill Giant](monster_name)?
+    - What are the monster [Giant Constrictor Snake](monster_name)'s attributes?  
+    - Can you tell me the stats of the monster [Giant Centipede](monster_name)?
+    - What are the stats of the monster [Killer Whale](monster_name)?
+    - Display the stats of the monster [kenku](monster_name)
+    - Provide information about the monster [Manticore](monster_name)'s stats
+    - Show me the stats of the monster [Mule](monster_name)
+    - Tell me about the monster [Cult Fanatic](monster_name)'s attributes
+    - What are the features of the monster [Orc](monster_name)?
+    - Show me the stats of the monster [Bugbear](monster_name)
+
+- intent: character_creation
+  examples: |
+    - /play
+    - play
+    - start the game!
+    - begin to play!
+    - let's play
+    - create a character
+    - I want to play
+
+- intent: select_race
+  examples: |
+    - /select_race{"selected_race": "Elf"}
+    - /select_race{"selected_race": "Human"}
+    - /select_race{"selected_race": "Halfling"}
+    - /select_race{"selected_race": "Orc"}
+    - /select_race{"selected_race": "Tiefling"}
+    - /select_race{"selected_race": "Dragonborn"}
+    - /select_race{"selected_race": "Gnome"}
+    - /select_race{"selected_race": "Half-Elf"}
+    - /select_race{"selected_race": "Half-Orc"}
+    - /select_race{"selected_race": "Aarakocra"}
+    - /select_race{"selected_race": "Tabaxi"}
+    - /select_race{"selected_race": "Kenku"}
+    - /select_race{"selected_race": "Firbolg"}
+    - /select_race{"selected_race": "Triton"}
+    - /select_race{"selected_race": "Lizardfolk"}
+    - /select_race{"selected_race": "Yuan-Ti Pureblood"}
+    - /select_race{"selected_race": "Changeling"}
+    - /select_race{"selected_race": "Goliath"}
+    - /select_race{"selected_race": "Kobold"}
+    - /select_race{"selected_race": "Warforged"}
+    - /select_race{"selected_race": "Fairy"}
+    - /select_race{"selected_race": "Harengon"}
+    - /select_race{"selected_race": "Shifter"}
+    - /select_race{"selected_race": "Minotaur"}
+    - /select_race{"selected_race": "Vedalken"}
+    - /select_race{"selected_race": "Simic Hybrid"}
+    - /select_race{"selected_race": "Centaur"}
+    - /select_race{"selected_race": "Verdan"}
+    - /select_race{"selected_race": "Leonin"}
+    - /select_race{"selected_race": "Satyr"}
+    - /select_race{"selected_race": "Ashborn (AotG)"}
+    - /select_race{"selected_race": "Warforged (UA)"}
+    - /select_race{"selected_race": "Native American (Blackfoot)"}
+    - /select_race{"selected_race": "Hexblood (Archived)"} 
+    - /select_race{"selected_race": "(WoW) Night Elf"} 
+    - /select_race{"selected_race": "Giomorgo (Half-Vistani)"} 
+    - /select_race{"selected_race": "Half-Elf  (Copy)"} 
+    - /select_race{"selected_race": "Ashborn (AotG)"} 
+    
+- intent: ask_about_race
+  examples: |
+    - Tell me about this race
+    - What can you tell me about this race?
+    - Can you give me details about this race?
+    - I want to know more about this race
+    - Tell me more about the race
+    - Give me information about the race
+    - What are the traits of this race?
+    - What is special about this race?
+    - Describe the features of this race
+    - What is known about this race?
+    - Could you provide details about this race?
+    - What makes this race unique?
+    - Share details about this race
+    - What characteristics does this race have?
+    - Can you explain the abilities of this race?
+    - What should I know about this race?
+    - Tell me everything about this race
+    - What are the main attributes of this race?
+    - How is this race different from others?
+    - Describe the special traits of this race
+    - Give me all the details about this race
+    - Can you explain the history of this race?
+    - What are the strengths and weaknesses of this race?
+    - Is this race known for anything special?
+    - What can this race do?
+    - What are the cultural traits of this race?
+    - What are some key facts about this race?
+    - Explain what makes this race interesting
+
+- intent: select_class
+  examples: |
+    - /select_class{"selected_class": "Fighter"}
+    - /select_class{"selected_class": "Wizard"}
+    - /select_class{"selected_class": "Barbarian"}
+    - /select_class{"selected_class": "Paladin"}
+    - /select_class{"selected_class": "Cleric"}
+    - /select_class{"selected_class": "Rogue"}
+    - /select_class{"selected_class": "Ranger"}
+    - /select_class{"selected_class": "Sorcerer"}
+    - /select_class{"selected_class": "Warlock"}
+    - /select_class{"selected_class": "Druid"}
+    - /select_class{"selected_class": "Monk"}
+    - /select_class{"selected_class": "Bard"}
+    - /select_class{"selected_class": "Artificer"}
+    - /select_class{"selected_class": "Blood Hunter"}
+    - /select_class{"selected_class": "Blood Hunter (archived)"}
+
+- intent: ask_about_class
+  examples: |
+    - Tell me about this class
+    - What can you tell me about this class?
+    - Can you give me details about this class?
+    - I want to know more about this class
+    - Tell me more about the class
+    - Give me information about the class
+    - What are the features of this class?
+    - What abilities does this class have?
+    - What are the traits of this class?
+
+- intent: character_status
+  examples: |
+    - /character_status
+    - Show me my character's status
+    - What is my current status?
+    - What is my character's status?
+    - Tell me about my character's level and inventory
+    - How much gold do I have?
+    - What spells do I have right now?
+    - Show my current level, inventory, and spells
+    - Display my character's information
+    - What items and spells do I have?
+
+- intent: spell_details
+  examples: |
+    - Tell me about the spell Fireball
+    - What are the details of the spell Mage Hand?
+    - Describe the spell Cure Wounds
+    - I want to know more about the spell Shield
+    - Can you give me the details of the spell Magic Missile?
+    - What is the range and description of the spell Counterspell?
+    - Give me all the characteristics of the spell Invisibility
+
+- intent: talk_to_npc
+  examples: |
+    - /talk_to_npc
+    - I want to talk to an NPC
+    - Talk to an NPC
+    - Speak with someone
+    - I want to speak with an NPC
+    - Let me talk to an NPC
+    - Start a conversation with an NPC
+    - Can I talk to an NPC?
+    - Initiate dialogue with an NPC
+    - Engage in a conversation with an NPC
+    - I need to talk to an NPC
+    - Open a conversation with an NPC
+    - Begin a discussion with an NPC
+    - Speak with an NPC now
+    - Start talking to an NPC
+    - Can I speak with someone in-game?
+    - Find an NPC to talk to
+    - I want to interact with an NPC
+    - I would like to talk to an NPC
+    - Begin dialogue with an NPC
+    - Chat with an NPC
+    - Can you help me talk to an NPC?
+    - Where can I find an NPC to speak to?
+    - Engage in dialogue with someone
+    - NPC conversation, please
+    - Is there an NPC to talk to here?
+    - I'd like to speak to a character
+    - Speak with a non-player character
+    - Find someone to talk to in the game
+    - Initiate NPC interaction
+    - Start a conversation with someone nearby
+    - Open NPC dialogue session
+    - Talk to an in-game character
+
+- intent: continue_talking
+  examples: |
+    - /continue_talking
+    - Continue talking
+    - Keep talking
+    - Tell me more
+    - I'd like to hear more
+    - Continue
+    - More descriptions
+    - Please continue
+    - Go on
+    - Can you say more?
+    - I want to hear more
+    - Keep going
+    - More details, please
+    - Can you elaborate?
+    - Tell me more about that
+    - I'm interested, continue
+    - Could you explain further?
+    - Expand on that
+    - Don't stop, keep talking
+    - Add more details
+    - Give me more information
+    - Let’s dive deeper into this
+    - Continue explaining
+    - Keep sharing
+    - Let me know more
+    - Give me additional details
+    - Go on with the explanation
+    - Carry on
+    - Please, go ahead
+    - Tell me what happens next
+    - And then what?
+    - Keep telling me
+    - What more can you say?
+    - Proceed with the explanation
+    - I’d like more details on this
+    - Elaborate on this, please
+
+- intent: select_item
+  examples: |
+    - /select_item{"item_name": "Sword", "item_cost": 15}
+    - /select_item{"item_name": "Shield", "item_cost": 10}
+    - /select_item{"item_name": "Healing Potion", "item_cost": 5}
+    - /select_item{"item_name": "Warship", "item_cost": 25000}
+    - /select_item{"item_name": "Magic Wand", "item_cost": 50}
+    - /select_item{"item_name": "Burglar's Pack", "item_cost": 16}
+    - /select_item{"item_name": "Helm", "item_cost": 10}
+    - /select_item{"item_name": "Spellbook", "item_cost": 50}
+    - /select_item{"item_name": "Lyre", "item_cost": 30}
+    - /select_item{"item_name": "Drow Poison (Injury)", "item_cost": 200}
+    - /select_item{"item_name": "Poison, Basic (vial)", "item_cost": 100}
+    - /select_item{"item_name": "Riding Horse", "item_cost": 75}
+    - /select_item{"item_name": "Carriage", "item_cost": 100}
+    - /select_item{"item_name": "Bad News (Exandria)", "item_cost": 10}
+    - /select_item{"item_name": "Pistol", "item_cost": 250}
+    - /select_item{"item_name": "Stake (Wooden)", "item_cost": 6}
+    - /select_item{"item_name": "Chalk (1 piece)", "item_cost": 8}
+    - /select_item{"item_name": "Sling Bullets", "item_cost": 8}
+    - /select_item{"item_name": "Tej", "item_cost": 10}
+    - /select_item{"item_name": "Blowgun", "item_cost": 10}
+    - /select_item{"item_name": "Handaxe", "item_cost": 5}
+    - /select_item{"item_name": "Whistle-Stick", "item_cost": 1}
+    - /select_item{"item_name": "Mirror, Steel", "item_cost": 5}
+    - /select_item{"item_name": "Tangler Grenade", "item_cost": 3}
+    - /select_item{"item_name": "Blunderbuss Bullets", "item_cost": 5}
+    - /select_item{"item_name": "Clothes, Fine", "item_cost": 15}
+    - /select_item{"item_name": "Rifle, Automatic", "item_cost": 8}
+    - /select_item{"item_name": "Ink Pen", "item_cost": 8}
+    - /select_item{"item_name": "Viol", "item_cost": 30}
+    - /select_item{"item_name": "Grappling Hook", "item_cost": 2}
+    - /select_item{"item_name": "Dulcimer", "item_cost": 25}
+    - /select_item{"item_name": "Theki Root", "item_cost": 3}
+    - /select_item{"item_name": "Arcane Focus", "item_cost": 7}
+    - /select_item{"item_name": "Sailing Ship", "item_cost": 10000}
+    - /select_item{"item_name": "Dungeoneer's Pack", "item_cost": 12}
+    - /select_item{"item_name": "Hourglass", "item_cost": 25}
+    - /select_item{"item_name": "Mastiff", "item_cost": 25}
+    - /select_item{"item_name": "Navigator's Tools", "item_cost": 25}
+    - /select_item{"item_name": "Jacinth", "item_cost": 5000}
+    - /select_item{"item_name": "Disguise Kit", "item_cost": 25}
+    - /select_item{"item_name": "Purple Worm Poison (Injury)", "item_cost": 2000.0}
+    - /select_item{"item_name": "Poison, Basic (vial)}
+    - /select_item{"item_name": "Torpor (Ingested)", "item_cost": 600.0}
+    - /select_item{"item_name": "Dynamite (Stick)", "item_cost": 7.6}
+
+- intent: return_to_post_creation
+  examples: |
+    - /return_to_post_creation
+    - Return to menu
+    - Go back to the main menu
+    - I'm done 
+    - Go back
+    - Return
+    - Back to options
+    - Go back now
+    - Return me to the start
+    - Return to main
+    - Return to main options
+    - Take me back to the menu
+    - Take me back to the main menu
+    - Go back to the beginning
+    - Take me to the initial menu
+    - Main menu please
+    - Back to previous
+    - Take me back to where I started
+    - I'm finished, take me back
+    - Restart and go back
+    - Back to home menu
+    - I want to go back
+    - Back to the start
+    - Go back to menu options
+    - I want to return to the options
+    - Let's go back
+    - Back to selection
+    - Back please
+    - Navigate back to options
+    - Return to the start
+    - Go back to previous options
+    - Send me back
+    - I want to return
+    - Navigate back to the main options
+    - Return to home screen
+    - Bring me back to the menu
+    - Return to where I was
+
+- intent: explore_city
+  examples: |
+    - /explore_city
+    - I want to explore the city
+    - Explore the city
+    - Walk around the city
+    - Show me the city
+    - Let me explore the streets
+    - Wander around the city
+    - Take a stroll in the city
+
+- intent: go_to_adventure
+  examples: |
+    - /go_to_adventure
+    - I want to go to an adventure
+    - Go to adventure
+    - Start an adventure
+
+- intent: continue_fighting
+  examples: |
+    - /continue_fighting
+    - Continue fighting
+    - Keep attacking
+    - Let’s continue the battle
+    - I want to continue fighting
+
+- intent: cast_spell
+  examples: |
+    - /cast_spell
+    - Cast a spell
+    - Use magic
+    - I want to cast a spell
+    - Show my spells
+
+- intent: select_spell
+  examples: |
+    - /select_spell{"selected_spell": "Fireball"}
+    - /select_spell{"selected_spell": "Magic Missile"}
+    - /select_spell{"selected_spell": "Cure Wounds"}
+    - /select_spell{"selected_spell": "Shield"}
+    - /select_spell{"selected_spell": "Guiding Hand (UA)"}
+
+- intent: help
+  examples: |
+    - /help
+    - I need help
+    - Help me
+    - Show me the available commands
+    - What commands can I use?
+    - What are the available commands?
+    - List the available commands
+
+- intent: reset
+  examples: |
+    - reset
+    - close
+    - abort
+    - cancel operation
+    - cancel
+    - reset all
+    - proceed to reset
+    - /reset  
+    - /cancel  

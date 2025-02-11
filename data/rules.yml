@@ -1,0 +1,131 @@
+version: "3.1"
+
+rules:
+- rule: Welcome message on start
+  steps:
+  - intent: start
+  - action: utter_start
+
+- rule: Say goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+  
+- rule: Reset rule
+  steps:
+  - intent: reset
+  - action: action_reset
+
+- rule: Describe a monster
+  steps:
+  - intent: describe_monster
+  - action: action_describe_monster
+
+- rule: Provide monster stats with name
+  condition:
+  - slot_was_set:
+      - monster_name
+  steps:
+  - intent: get_monster_stats
+  - action: action_get_monster_stats
+
+- rule: Character creation
+  steps:
+  - intent: character_creation
+  - action: action_select_race
+  
+- rule: Select race
+  steps:
+  - intent: select_race
+  - slot_was_set:
+      - selected_race
+  - action: action_select_class
+
+- rule: Select class
+  steps:
+  - intent: select_class
+  - slot_was_set:
+      - selected_class
+  - action: action_character_creation
+  - action: utter_main_menu_explained
+  - action: utter_post_character_creation
+
+- rule: Search race information
+  steps:
+  - intent: ask_about_race
+  - slot_was_set:
+      - selected_race
+  - action: action_search_race
+
+- rule: Search class information
+  steps:
+  - intent: ask_about_class
+  - slot_was_set:
+      - selected_class
+  - action: action_search_class
+
+- rule: Show character status
+  steps:
+    - intent: character_status
+    - action: action_character_status
+
+- rule: Provide spell details
+  steps:
+    - intent: spell_details
+    - action: action_spell_details
+
+- rule: Talk to NPC
+  steps:
+  - intent: talk_to_npc
+  - action: action_talk_to_npc
+  
+- rule: Continue talking with NPC
+  steps:
+  - intent: continue_talking
+  - action: action_continue_talking
+
+- rule: Return to menu
+  steps:
+  - intent: return_to_post_creation
+  - action: utter_post_character_creation
+
+- rule: Select item from merchant
+  steps:
+  - intent: select_item
+  - action: action_select_item
+
+- rule: Custom input prompt
+  steps:
+  - intent: custom_input_prompt
+  - action: action_ask_for_custom_input
+
+- rule: Explore the city
+  steps:
+  - intent: explore_city
+  - action: action_explore_city
+
+- rule: Start combat
+  steps:
+  - intent: go_to_adventure
+  - action: utter_fight_explained
+  - action: action_start_combat
+
+- rule: Continue fighting
+  steps:
+  - intent: continue_fighting
+  - action: action_continue_fighting
+
+- rule: Cast a spell
+  steps:
+  - intent: cast_spell
+  - action: action_cast_spell
+
+- rule: Select a spell
+  steps:
+  - intent: select_spell
+  - action: action_process_spell
+  
+- rule: Display help commands
+  steps:
+    - intent: help
+    - action: action_help

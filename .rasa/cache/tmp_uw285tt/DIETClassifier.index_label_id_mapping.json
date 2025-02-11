@@ -1,0 +1,15 @@
+{
+  "0": "ask_about_race",
+  "1": "character_creation",
+  "2": "describe_monster",
+  "3": "explore_city",
+  "4": "get_monster_stats",
+  "5": "go_to_adventure",
+  "6": "return_to_post_creation",
+  "7": "select_class",
+  "8": "select_item",
+  "9": "select_race",
+  "10": "start",
+  "11": "stop",
+  "12": "talk_to_npc"
+}

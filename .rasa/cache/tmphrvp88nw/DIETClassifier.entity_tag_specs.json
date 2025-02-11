@@ -1,0 +1,28 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-monster_name",
+      "2": "I-monster_name",
+      "3": "L-monster_name",
+      "4": "U-monster_name",
+      "5": "B-spell_name",
+      "6": "I-spell_name",
+      "7": "L-spell_name",
+      "8": "U-spell_name",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-monster_name": 1,
+      "I-monster_name": 2,
+      "L-monster_name": 3,
+      "U-monster_name": 4,
+      "B-spell_name": 5,
+      "I-spell_name": 6,
+      "L-spell_name": 7,
+      "U-spell_name": 8,
+      "O": 0
+    },
+    "num_tags": 9
+  }
+]

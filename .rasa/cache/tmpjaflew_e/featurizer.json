@@ -1,0 +1,82 @@
+{
+  "type": "MaxHistoryTrackerFeaturizer",
+  "state_featurizer": {
+    "action_texts": [],
+    "entity_tag_specs": [],
+    "feature_states": {
+      "intent": {
+        "ask_about_race": 0,
+        "back": 1,
+        "character_creation": 2,
+        "describe_monster": 3,
+        "explore_city": 4,
+        "get_monster_stats": 5,
+        "go_to_adventure": 6,
+        "nlu_fallback": 7,
+        "out_of_scope": 8,
+        "restart": 9,
+        "return_to_post_creation": 10,
+        "select_class": 11,
+        "select_item": 12,
+        "select_race": 13,
+        "session_start": 14,
+        "start": 15,
+        "stop": 16,
+        "talk_to_npc": 17
+      },
+      "action_name": {
+        "action_listen": 0,
+        "action_restart": 1,
+        "action_session_start": 2,
+        "action_default_fallback": 3,
+        "action_deactivate_loop": 4,
+        "action_revert_fallback_events": 5,
+        "action_default_ask_affirmation": 6,
+        "action_default_ask_rephrase": 7,
+        "action_two_stage_fallback": 8,
+        "action_unlikely_intent": 9,
+        "action_back": 10,
+        "...": 11,
+        "action_extract_slots": 12,
+        "utter_start": 13,
+        "action_describe_monster": 14,
+        "action_get_monster_stats": 15,
+        "action_stop": 16,
+        "action_character_creation": 17,
+        "action_select_race": 18,
+        "action_select_class": 19,
+        "action_search_race": 20,
+        "action_talk_to_npc": 21,
+        "action_select_item": 22,
+        "utter_ask_monster_name_for_description": 23,
+        "utter_ask_monster_name_for_stats": 24,
+        "utter_default_fallback": 25,
+        "utter_explore_city": 26,
+        "utter_go_to_adventure": 27,
+        "utter_greet": 28,
+        "utter_intro_character_creation": 29,
+        "utter_monster_not_found": 30,
+        "utter_no_race_selected": 31,
+        "utter_post_character_creation": 32,
+        "utter_talk_to_npc": 33
+      },
+      "entities": {
+        "monster_name": 0,
+        "selected_class": 1,
+        "selected_race": 2
+      },
+      "slots": {
+        "monster_name_0": 0,
+        "selected_race_0": 1,
+        "selected_class_0": 2,
+        "inventory_0": 3,
+        "gold_0": 4,
+        "gold_1": 5,
+        "merchant_items_0": 6
+      },
+      "active_loop": {}
+    }
+  },
+  "remove_duplicates": true,
+  "max_history": 5
+}

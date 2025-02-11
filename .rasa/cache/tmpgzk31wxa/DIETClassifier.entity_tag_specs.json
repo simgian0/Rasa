@@ -1,0 +1,28 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-monster_name",
+      "2": "I-monster_name",
+      "3": "L-monster_name",
+      "4": "U-monster_name",
+      "5": "B-selected_race",
+      "6": "I-selected_race",
+      "7": "L-selected_race",
+      "8": "U-selected_race",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-monster_name": 1,
+      "I-monster_name": 2,
+      "L-monster_name": 3,
+      "U-monster_name": 4,
+      "B-selected_race": 5,
+      "I-selected_race": 6,
+      "L-selected_race": 7,
+      "U-selected_race": 8,
+      "O": 0
+    },
+    "num_tags": 9
+  }
+]
