@@ -1246,9 +1246,9 @@ class ActionHelp(Action):
             "   - Example: *Tell me about the spell Fireball*\n"
             "   - Will give a general description of the spell as it would be in a D&D manual.\n\n"
             
-            "8. **Cast Spell**:\n"
+            "8. **Cast Spell** (Only in combat):\n"
             "   - Example: */cast_spell*, *Cast Spell*\n"
-            "   - If you are in combat and you exited to see the description of a spell, you can return to \n"
+            "   - If you are in combat and you exited to see the description of a spell, you can return to spells menu by typing this command\n"
             
             "7. **Return to main menu**:\n"
             "   - Example: *Return to main menu* (can be called after character creation)\n"
