@@ -61,7 +61,6 @@ stories:
 - story: Get monster stats
   steps:
   - intent: get_monster_stats
-  - action: utter_ask_monster_name_for_stats
   - action: action_get_monster_stats  
 
 - story: Helping story
@@ -152,6 +151,8 @@ stories:
     - action: action_character_status
     - intent: explore_city
     - action: action_explore_city
+    - intent: explore_city
+    - action: action_explore_city
     - intent: continue_talking
     - action: action_continue_talking
     - intent: return_to_post_creation
@@ -174,8 +175,8 @@ stories:
   steps:
     - intent: explore_city
     - action: action_explore_city
-    - intent: continue_talking
-    - action: action_continue_talking
+    - intent: explore_city
+    - action: action_explore_city
     - intent: return_to_post_creation
     - action: utter_post_character_creation
     - intent: talk_to_npc
@@ -197,6 +198,14 @@ stories:
     - action: utter_post_character_creation
     - intent: spell_details
     - action: action_spell_details
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+    - intent: get_monster_stats
+    - action: action_get_monster_stats  
+    - intent: return_to_post_creation
+    - action: utter_post_character_creation
+    - intent: describe_monster
+    - action: action_describe_monster
     - intent: help
     - action: action_help
 

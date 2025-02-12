@@ -39,6 +39,12 @@ class ActionDescribeMonster(Action):
         
         # Estrarre il messaggio dell'utente e normalizzarlo
         message = tracker.latest_message.get("text", "").lower()
+        
+        # Controlla se il messaggio contiene la parola "monster"
+        if "monster" not in message:
+            dispatcher.utter_message(text="Please specify a monster name by saying 'monster' followed by its name.")
+            return []
+        
         user_input = message.split("monster")[-1].strip()
 
         # Trovare il nome più simile utilizzando difflib
@@ -102,6 +108,12 @@ class ActionGetMonsterStats(Action):
         
         # Estrarre il messaggio dell'utente e normalizzarlo
         message = tracker.latest_message.get("text", "").lower()
+        
+        # Controlla se il messaggio contiene la parola "monster"
+        if "monster" not in message:
+            dispatcher.utter_message(text="Please specify a monster name by saying 'monster' followed by its name.")
+            return []
+        
         user_input = message.split("monster")[-1].strip()
 
         # Trovare il nome più simile utilizzando difflib
@@ -216,7 +228,7 @@ class ActionCharacterCreation(Action):
                 random_spells = spells_df.sample(n=10)["name"].str.replace(r"[()]", "", regex=True).tolist()
 
                 # Aggiungi gli incantesimi al messaggio
-                spells_message = "\nYour spells are:\n" + "\n- ".join(random_spells)
+                spells_message = "\nYour spells are:\n- " + "\n- ".join(random_spells)
                 message += spells_message
                 spells = random_spells
             else: 
@@ -508,8 +520,14 @@ class ActionSpellDetails(Action):
         # Carica il dataset delle spell
         spells_df = pd.read_csv(DATASET_SPELLS_PATH)
 
-        # Confronta la colonna delle spell ignorando il case
-        spell_data = spells_df[spells_df["name"].str.lower() == spell_name.lower()]
+        # Rimuove le parentesi tonde dai nomi delle spell nel dataset
+        spells_df["normalized_name"] = spells_df["name"].str.replace(r"[()]", "", regex=True).str.strip()
+
+        # Rimuove le parentesi tonde anche dal nome della spell cercata
+        normalized_spell_name = re.sub(r"[()]", "", spell_name).strip()
+
+        # Confronta la colonna normalizzata delle spell ignorando il case
+        spell_data = spells_df[spells_df["normalized_name"].str.lower() == normalized_spell_name.lower()]
 
         if spell_data.empty:
             dispatcher.utter_message(text=f"Sorry, I couldn't find any details about the spell '{spell_name}'.")
@@ -642,7 +660,7 @@ class ActionTalkToNPC(Action):
             buttons = [
                 {"title": "Continue talking", "payload": "/continue_talking"},
                 {"title": "Return to menu", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
+                
             ]
 
             await asyncio.sleep(0.1)
@@ -675,7 +693,7 @@ class ActionTalkToNPC(Action):
 
             # Aggiungi un pulsante per tornare al menu
             buttons.append({"title": "Return to menu", "payload": "/return_to_post_creation"})
-            buttons.append({"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"})
+            
 
             await asyncio.sleep(0.1)
             dispatcher.utter_message(text=f"The merchant of {city_name} shows you their wares. You can select items or return to the menu:", buttons=buttons)
@@ -721,8 +739,7 @@ class ActionSelectItem(Action):
                 ]
                 
                 # Aggiungi un pulsante per tornare al menu
-                item_buttons.append({"title": "Return to menu", "payload": "/return_to_post_creation"})
-                item_buttons.append({"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"})
+                item_buttons.append({"title": "Return to menu", "payload": "/return_to_post_creation"})   
 
                 dispatcher.utter_message(text="Here are the remaining items:", buttons=item_buttons)
             return []  # Ritorna per terminare qui la gestione dell'azione
@@ -834,7 +851,6 @@ class ActionContinueTalking(Action):
         buttons = [
             {"title": "Continue talking", "payload": "/continue_talking"},
             {"title": "Return to menu", "payload": "/return_to_post_creation"},
-            {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
         ]
         
         await asyncio.sleep(0.1)
@@ -923,7 +939,6 @@ class ActionExploreCity(Action):
             buttons = [
                 {"title": "Continue exploring", "payload": "/explore_city"},
                 {"title": "Return to menu", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
             ]
 
             await asyncio.sleep(0.1)
@@ -935,7 +950,6 @@ class ActionExploreCity(Action):
             # Bottoni per continuare o tornare al menu
             buttons = [
                 {"title": "Return to menu", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
             ]
 
             await asyncio.sleep(0.1)
@@ -1013,7 +1027,6 @@ class ActionStartCombat(Action):
             {"title": "Continue fighting", "payload": "/continue_fighting"},
             {"title": "Cast a spell", "payload": "/cast_spell"},
             {"title": "Run away", "payload": "/return_to_post_creation"},
-            {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
         ]
         
         # Mostra il messaggio della difficoltà e i bottoni di scelta
@@ -1043,7 +1056,6 @@ class ActionContinueFighting(Action):
                 # Bottoni di scelta
                 buttons = [
                 {"title": "Return to city", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
                 ]
         
                 # Mostra il messaggio della difficoltà e i bottoni di scelta
@@ -1056,7 +1068,6 @@ class ActionContinueFighting(Action):
                 # Bottoni di scelta
                 buttons = [
                 {"title": "Return to city", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
                 ]
         
                 # Mostra il messaggio della difficoltà e i bottoni di scelta
@@ -1069,7 +1080,6 @@ class ActionContinueFighting(Action):
                 # Bottoni di scelta
                 buttons = [
                 {"title": "Return to city", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
                 ]
         
                 # Mostra il messaggio della difficoltà e i bottoni di scelta
@@ -1082,7 +1092,7 @@ class ActionContinueFighting(Action):
                 # Bottoni di scelta
                 buttons = [
                 {"title": "Return to city", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
+                
                 ]
         
                 # Mostra il messaggio della difficoltà e i bottoni di scelta
@@ -1097,7 +1107,6 @@ class ActionContinueFighting(Action):
             # Bottoni di scelta
             buttons = [
             {"title": "Return to city", "payload": "/return_to_post_creation"},
-            {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
             ]
         
             # Mostra il messaggio della difficoltà e i bottoni di scelta
@@ -1116,6 +1125,7 @@ class ActionCastSpell(Action):
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         spells = tracker.get_slot("spells") or []
+        remaining_spells = tracker.get_slot("remaining_spells") or spells.copy()
         
         # Controlla se ci sono incantesimi disponibili e se la lunghezza è inferiore a 7
         if len(spells) == 0:
@@ -1125,7 +1135,6 @@ class ActionCastSpell(Action):
                 {"title": "Continue fighting", "payload": "/continue_fighting"},
                 {"title": "Cast a spell", "payload": "/cast_spell"},
                 {"title": "Run away", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
             ]
         
             # Mostra il messaggio della difficoltà e i bottoni di scelta
@@ -1134,9 +1143,11 @@ class ActionCastSpell(Action):
 
         # Mostra i bottoni per selezionare un incantesimo
         spell_buttons = [
-            {"title": spell, "payload": f'/select_spell{{"selected_spell": "{spell}"}}'} for spell in spells
+            {"title": spell, "payload": f'/select_spell{{"selected_spell": "{spell}"}}'}
+            for spell in remaining_spells
         ]
-
+        
+        spell_buttons.append({"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"})
         dispatcher.utter_message(text="Select a spell to cast:", buttons=spell_buttons)
         return []
     
@@ -1152,12 +1163,12 @@ class ActionProcessSpell(Action):
         selected_spell = tracker.get_slot("selected_spell")
         
          # Controllo sulla lunghezza della lista temporanea delle spell
-        if len(remaining_spells) <= 7:
+        if len(remaining_spells) < 8:
             dispatcher.utter_message(text=f"You have consumed all your magic energies. No more spells can be cast. The difficulty is now {difficulty}. What do you want to do?")
             buttons = [
                 {"title": "Continue fighting", "payload": "/continue_fighting"},
                 {"title": "Run away", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
+                
             ]
             
             dispatcher.utter_message(buttons=buttons)
@@ -1168,8 +1179,9 @@ class ActionProcessSpell(Action):
             dispatcher.utter_message(text="Invalid spell selected or the spell is no longer available.")
             buttons = [
                 {"title": "Continue fighting", "payload": "/continue_fighting"},
+                {"title": "Cast a spell", "payload": "/cast_spell"},
                 {"title": "Run away", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
+               
             ]
             dispatcher.utter_message(buttons=buttons)
             return []
@@ -1184,7 +1196,10 @@ class ActionProcessSpell(Action):
                 {"title": spell, "payload": f'/select_spell{{"selected_spell": "{spell}"}}'}
                 for spell in remaining_spells
             ]
+            
+            spell_buttons.append({"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"})
             dispatcher.utter_message(text="Select another spell or return to the fight:", buttons=spell_buttons)
+        
         else:
             dispatcher.utter_message(text="No spells left to cast. You must continue fighting.")
             buttons = [
@@ -1207,12 +1222,12 @@ class ActionHelp(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         help_message = (
             "**Available Commands:**\n\n"
-            "1. **Describe monster**:\n"
-            "   - Example: *Tell me about the monster Zombie*\n"
+            "1. **Describe monster** (You have to imput the monster name):\n"
+            "   - Example: *Tell me about the monster Zombie* (For improved performance is best to fight some monsters first!)\n"
             "   - Will give a description of the monster called by the name.\n\n"
             
-            "2. **Get monster stats**:\n"
-            "   - Example: *What are the stats of the monster Zombie*\n"
+            "2. **Get monster stats** (You have to imput the monster name):\n"
+            "   - Example: *What are the stats of the monster Zombie* (For improved performance is best to fight some monsters first!)\n"
             "   - Will give a description of how strong the monster is by explaining its statistics.\n\n"
             
             "3. **Ask about race**:\n"
@@ -1230,6 +1245,10 @@ class ActionHelp(Action):
             "6. **Spell details**:\n"
             "   - Example: *Tell me about the spell Fireball*\n"
             "   - Will give a general description of the spell as it would be in a D&D manual.\n\n"
+            
+            "8. **Cast Spell**:\n"
+            "   - Example: */cast_spell*, *Cast Spell*\n"
+            "   - If you are in combat and you exited to see the description of a spell, you can return to \n"
             
             "7. **Return to main menu**:\n"
             "   - Example: *Return to main menu* (can be called after character creation)\n"
