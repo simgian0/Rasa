@@ -314,6 +314,3 @@ responses:
           payload: "/go_to_adventure"    
         - title: "Write your action"
           payload: "/custom_input_prompt"
-
-  utter_ask_monster_name_for_stats:
-    - text: "Which monster's stats would you like to know about?"
