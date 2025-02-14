@@ -194,6 +194,9 @@ class ActionCharacterCreation(Action):
         # Normalizza la colonna 'race' rimuovendo le parentesi tonde
         df['race'] = df['race'].str.replace(r"[()]", "", regex=True)
         
+        # Normalizza la colonna 'race' rimuovendo le parentesi tonde
+        df["class_starting"] = df["class_starting"].str.replace(r"[()]", "", regex=True)
+        
         # Filtra il dataset per razza e classe
         filtered_df = df[(df["race"] == selected_race) & (df["class_starting"] == selected_class)]
         if not filtered_df.empty:
@@ -286,7 +289,7 @@ class ActionSelectRace(Action):
         # Ottieni una lista di razze uniche
         race_list = df["race"].dropna().unique().tolist()
     
-        # Seleziona 10 razze casuali
+        # Seleziona 4 razze casuali
         random_races = random.sample(race_list, min(len(race_list), 10))
 
         # Crea i bottoni per le razze
@@ -295,7 +298,7 @@ class ActionSelectRace(Action):
         ]
 
         # Mostra le razze disponibili
-        dispatcher.utter_message(text="Select a race from the following options:", buttons=race_buttons)
+        dispatcher.utter_message(text="Select a race from the following options:", buttons=race_buttons, button_type="vertical")
         return []
 
 class ActionSelectClass(Action):
@@ -334,7 +337,7 @@ class ActionSelectClass(Action):
             dispatcher.utter_message(text=f"No classes available for the race '{selected_race}'.")
             return []
 
-        # Seleziona 10 classi casuali
+        # Seleziona 4 classi casuali
         random_classes = random.sample(class_list, min(len(class_list), 10))
 
         # Crea i bottoni per le classi
@@ -344,7 +347,7 @@ class ActionSelectClass(Action):
         ]
 
         # Mostra le classi disponibili
-        dispatcher.utter_message(text=f"Based on your race '{selected_race}', here are the available classes:", buttons=class_buttons)
+        dispatcher.utter_message(text=f"Based on your race '{selected_race}', here are the available classes:", buttons=class_buttons, button_type="vertical")
         return []
 
 class ActionSearchRace(Action):
@@ -583,42 +586,40 @@ class ActionTalkToNPC(Action):
         level = tracker.get_slot("level")
 
         if not level: 
-            dispatcher.utter_message(text="Please, go in order and proceed with character creation first")
-            return[]
-        
-        # Simula il 50% di probabilità
-        npc_type = random.choice(["normal", "merchant"])
-        
-        # Carica il dataset e seleziona una nuova città casuale
-        df = pd.read_csv(DATASET_FAERUN_PATH)
-        selected_city = df.sample().iloc[0]
-        
-        # Controlla se lo slot selected_city è già impostato
+            dispatcher.utter_message(text="Please, go in order and proceed with character creation first.")
+            return []
+
+        # Ottieni il nome della città dallo slot
         city_name = tracker.get_slot("selected_city")
+
+        # Carica il dataset
+        df = pd.read_csv(DATASET_FAERUN_PATH)
+
         if city_name:
-            # Cerca i dettagli della città specifica dal dataset
+            # Cerca i dettagli della città selezionata nel dataset
             city_data = df[df["Nation or City-State"].str.lower() == city_name.lower()]
             
-            if not city_data.empty:
-                selected_city = city_data.iloc[0]  # Usa la città trovata
-                dispatcher.utter_message(text=f"You are still in {city_name}. Let’s continue exploring.")
-            else:
-                # Se il nome della città nello slot non è valido, seleziona una città casuale
+            if city_data.empty:
+                # Se la città nello slot non è valida, scegline una nuova
                 selected_city = df.sample().iloc[0]
                 city_name = selected_city["Nation or City-State"]
                 dispatcher.utter_message(text=f"The city '{tracker.get_slot('selected_city')}' could not be found. You have been redirected to {city_name}.")
+            else:
+                # Usa la città esistente
+                selected_city = city_data.iloc[0]
+                dispatcher.utter_message(text=f"You are still in {city_name}. Let’s continue exploring.")
         else:
             # Se lo slot è vuoto, seleziona una città casuale
             selected_city = df.sample().iloc[0]
             city_name = selected_city["Nation or City-State"]
-            dispatcher.utter_message(text=f"You have arrived in {city_name}.")   
-            
-        # Messaggio con la descrizione
-        dispatcher.utter_message(text=f"You meet a friendly villager.")    
-         
+
+
+        # Simula il 50% di probabilità di incontrare un NPC normale o un mercante
+        npc_type = random.choice(["normal", "merchant"])
+  
+
         if npc_type == "normal":
-            
-            # Seleziona una città casuale
+            # Estrarre informazioni sulla città
             region = selected_city["Region"]
             government = selected_city["Government"]
             religion = selected_city["Religion"] if not pd.isna(selected_city["Religion"]) else "no particular religion"
@@ -627,86 +628,62 @@ class ActionTalkToNPC(Action):
             secondary_race = selected_city["Secondary Race"] if not pd.isna(selected_city["Secondary Race"]) else "various races"
             opposed_to = selected_city["Opposed To"] if not pd.isna(selected_city["Opposed To"]) else "some dangerous figures from other cities that could be here"
             notes = selected_city["Notes"] if not pd.isna(selected_city["Notes"]) else "it is a place of mystery :D"
-            
-            # Descrizioni alternative specifiche della città per incontri ripetuti
-            specific_descriptions = [
-                f"It's always lively here in {city_name}, with the {primary_race} leading the way and {secondary_race} adding their unique presence. The {government} system keeps things running, but there's always something new happening under the leadership of {leader}. By the way, {notes} is something worth noting here.",
-
-                f"{city_name} never ceases to amaze its travelers. Whether you're exploring its bustling streets or the quiet corners, you’ll notice how the influence of {religion} is woven into daily life. Just don’t forget, tensions sometimes arise with {opposed_to}.",
-
-                f"In {city_name}, you can’t help but feel the heartbeat of the region. With {leader} steering its course and the {government} system maintaining balance, there's always something to witness. And if you’re curious about history, you might be interested to know that {notes}.",
-
-                f"The streets of {city_name} tell stories of ancient times. The {primary_race} and {secondary_race} contribute their own traditions, creating a blend of cultures that’s hard to miss. As you explore, you’ll see how {religion} influences the way people live. Just be cautious about {opposed_to}.",
-
-                f"You’re back in {city_name}. This city never gets old, does it? Whether you’re visiting the local market or enjoying the festivals, there’s always a story to uncover. Did you know that {notes}? It’s just one of the many things that makes this city special.",
-
-                f"The spirit of {city_name} can be felt everywhere, from the central square to its quiet outskirts. With {leader} guiding the way and the {government} system ensuring order, you’re bound to find something interesting. Oh, and here’s a fact to keep in mind: {notes}.",
-
-                f"In {city_name}, the daily hustle is as normal as the sunrise. The city thrives under the leadership of {leader} and the structure of its {government}. As you walk through the streets, you might hear a few locals mention that {notes}. Just watch out for trouble related to {opposed_to}.",
-
-                f"{city_name} remains a beacon in the {region} region. Its inhabitants, mainly {primary_race}, are always up to something. The influence of {secondary_race} brings diversity, and faith in {religion} remains strong. By the way, {notes} is something locals often talk about.",
-
-                f"The people of {city_name} carry on with their lives, blending tradition with the modern hustle. Under {leader}'s guidance, and thanks to the {government} system, the city thrives. Here’s a local saying: 'In {city_name}, there’s always more to discover.' Perhaps you’ll stumble upon {notes} too.",
-
-                f"Back in {city_name}? You know, it’s never quite the same twice. The {primary_race} and {secondary_race} here keep things vibrant, and the {government} keeps them in check. You’ll see traces of {religion} in festivals and ceremonies. Just keep an eye out for any signs of trouble from {opposed_to}."
-            ]
 
             # Seleziona una descrizione casuale
+            specific_descriptions = [
+                f"In {city_name}, the {primary_race} community is thriving, but tensions with {opposed_to} sometimes arise.",
+                f"{city_name} is a bustling city, well known for {notes}.",
+                f"The streets of {city_name} are lively, with a mix of {primary_race} and {secondary_race}.",
+                f"In {city_name}, {leader} ensures order while the {government} maintains balance.",
+                f"{city_name} is famous for its {religion} traditions and its unique culture."
+            ]
+
             selected_description = random.choice(specific_descriptions)
-            await asyncio.sleep(0.1)  # Pausa breve per evitare blocchi
-            dispatcher.utter_message(text=f"He says: {selected_description}")
+            await asyncio.sleep(0.1)  
+            dispatcher.utter_message(text=f"You have arrived in {city_name}.\nYou meet a friendly villager.\nHe says: {selected_description}")
 
             # Bottoni per continuare o tornare al menu
             buttons = [
                 {"title": "Continue talking", "payload": "/continue_talking"},
                 {"title": "Return to menu", "payload": "/return_to_post_creation"},
-                
             ]
 
             await asyncio.sleep(0.1)
-            # Mostra i bottoni
-            dispatcher.utter_message(text="What would you like to do next?", buttons=buttons)
-            # Imposta lo slot con il nome della città
-            return [SlotSet("selected_city", city_name)]
+            dispatcher.utter_message(text="What would you like to do next?", buttons=buttons, button_type="vertical")
         
-        elif npc_type == "merchant":
-            # NPC mercante: Fornisce una lista di oggetti casuali
+        if npc_type == "merchant":
+            # Carica il dataset e seleziona 20 oggetti casuali
             df = pd.read_csv(DATASET_EQUIPS_PATH)
             sampled_items = df.sample(n=20)
 
             item_list = []
-            for _, row in sampled_items.iterrows():
+            for idx, (_, row) in enumerate(sampled_items.iterrows(), start=1):
                 item_name = row["Name"]
                 item_cost = row["Price (golds)"]
-                # Rimuovi le parentesi dal nome dell'oggetto 
                 clean_item_name = item_name.replace("(", "").replace(")", "").strip()
                 if pd.isna(item_cost):
                     item_cost = round(random.uniform(1.0, 10.0), 1)
-                item_list.append({"name": clean_item_name, "cost": item_cost})
-
-            # Salva gli oggetti del mercante come slot
-            buttons = [
-                {"title": f"{item['name']} ({item['cost']} gold)", 
-                 "payload": f'/select_item{{"item_name": "{item["name"]}", "item_cost": {item["cost"]}}}'}
-                for item in item_list
+                item_list.append({"index": idx, "name": clean_item_name, "cost": item_cost})
+            button = [
+                {"title": "Return to menu", "payload": "/return_to_post_creation"},
             ]
+            # Salva gli oggetti del mercante come slot
+            dispatcher.utter_message(
+                text=f"The merchant shows you their wares. Type the number of the item you wish to buy:\n\n" +
+                     "\n".join([f"{item['index']}: {item['name']} ({item['cost']} gold)" for item in item_list]), buttons=button, button_type="vertical"
+            )
 
-            # Aggiungi un pulsante per tornare al menu
-            buttons.append({"title": "Return to menu", "payload": "/return_to_post_creation"})
-            
-
-            await asyncio.sleep(0.1)
-            dispatcher.utter_message(text=f"The merchant of {city_name} shows you their wares. You can select items or return to the menu:", buttons=buttons)
             return [SlotSet("merchant_items", item_list), SlotSet("selected_city", city_name)]
 
-        return []
+        # Assicurati che la città sia memorizzata nello slot solo la prima volta
+        return [SlotSet("selected_city", city_name)]
+
 
 class ActionSelectItem(Action):
     def name(self) -> Text:
         return "action_select_item"
 
     async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        # Ottieni lo slot con gli oggetti del mercante e sli slot per il giocatore
         merchant_items = tracker.get_slot("merchant_items") or []
         inventory = tracker.get_slot("inventory") or []
         gold = tracker.get_slot("gold") or 0
@@ -716,69 +693,57 @@ class ActionSelectItem(Action):
             dispatcher.utter_message(text="Please, go in order and proceed with character creation first")
             return[]
         
-        # Ottieni l'oggetto selezionato
-        item_name = tracker.get_slot("item_name")
-        item_cost = tracker.get_slot("item_cost")
-
-        if not item_name or not item_cost:
-            dispatcher.utter_message(text="No item selected.")
+        # Ottieni il messaggio dell'utente
+        user_message = tracker.latest_message.get("text", "").strip().lower()
+        button = [
+                {"title": "Return to menu", "payload": "/return_to_post_creation"},
+            ]
+        
+        # Controlla se l'input è un numero valido
+        if not user_message.isdigit():
+            dispatcher.utter_message(text="Invalid input. Please type the number of the item you want to buy.", buttons = button, button_type="vertical")
             return []
         
+        item_index = int(user_message)
+
+        # Controlla se il numero selezionato è valido
+        selected_item = next((item for item in merchant_items if item["index"] == item_index), None)
+        
+        if not selected_item:
+            dispatcher.utter_message(text="Invalid selection. Please choose a number from the list. ", buttons = button, button_type="vertical")
+            return []
+
+        item_name = selected_item["name"]
+        item_cost = selected_item["cost"]
+
         # Controlla se l'utente ha abbastanza oro
         if gold < item_cost:
-            await asyncio.sleep(0.1)
-            dispatcher.utter_message(text=f"You don't have enough gold to buy {item_name}. You have {gold} gold left.")
-            # Mostra nuovamente la lista degli oggetti come bottoni
-            if merchant_items:
-                item_buttons = [
-                    {
-                        "title": f"{item['name']} ({item['cost']} gold)",
-                        "payload": f'/select_item{{"item_name": "{item["name"]}", "item_cost": {item["cost"]}}}'
-                    }
-                    for item in merchant_items
-                ]
-                
-                # Aggiungi un pulsante per tornare al menu
-                item_buttons.append({"title": "Return to menu", "payload": "/return_to_post_creation"})   
-
-                dispatcher.utter_message(text="Here are the remaining items:", buttons=item_buttons)
-            return []  # Ritorna per terminare qui la gestione dell'azione
+            dispatcher.utter_message(text=f"You don't have enough gold to buy {item_name}. You have {round(gold, 1)} gold left.\nType another number to buy an item or press the button below to go back.", buttons = button, button_type="vertical")
+            return []
 
         # Rimuovi l'oggetto dalla lista del mercante
-        updated_items = [item for item in merchant_items if item["name"] != item_name]
-        
+        updated_items = [item for item in merchant_items if item["index"] != item_index]
+
         # Aggiungi l'oggetto all'inventario
         inventory.append(item_name)
         gold -= item_cost
-        
-        await asyncio.sleep(0.1)
-        # Messaggio di conferma
+
         dispatcher.utter_message(
             text=f"You have purchased {item_name} for {item_cost} gold. You have {round(gold,1)} gold left."
         )
-
-        # Mostra la lista aggiornata degli oggetti come bottoni
+        
+        # Mostra la lista aggiornata se ci sono ancora oggetti
         if updated_items:
-            item_buttons = [
-                {
-                    "title": f"{item['name']} ({item['cost']} gold)",
-                    "payload": f'/select_item{{"item_name": "{item["name"]}", "item_cost": {item["cost"]}}}'
-                }
-                for item in updated_items
-            ]
-            
-            # Aggiungi un pulsante per tornare al menu
-            item_buttons.append({"title": "Return to menu", "payload": "/return_to_post_creation"})
-            item_buttons.append({"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"})
-            
-            await asyncio.sleep(0.1)
-            dispatcher.utter_message(text="Here are the remaining items:", buttons=item_buttons)
+            dispatcher.utter_message(
+                text="Here are the remaining items. Type the number to buy:\n\n" +
+                     "\n".join([f"{item['index']}: {item['name']} ({item['cost']} gold)" for item in updated_items]), buttons=button, button_type="vertical"
+            )
         else:
-            item_buttons = ({"title": "Return to menu", "payload": "/return_to_post_creation"},)
-            dispatcher.utter_message(text="The merchant has no more items to sell.", buttons=item_buttons)
+            dispatcher.utter_message(text="The merchant has no more items to sell.")
 
         # Salva l'inventario e l'oro aggiornati
         return [SlotSet("merchant_items", updated_items), SlotSet("inventory", inventory), SlotSet("gold", gold)]
+
 
 class ActionContinueTalking(Action):
     def name(self) -> Text:
@@ -854,7 +819,7 @@ class ActionContinueTalking(Action):
         ]
         
         await asyncio.sleep(0.1)
-        dispatcher.utter_message(text="What would you like to do next?", buttons=buttons)
+        dispatcher.utter_message(text="What would you like to do next?", buttons=buttons, button_type="vertical")
 
         return []
 
@@ -942,7 +907,7 @@ class ActionExploreCity(Action):
             ]
 
             await asyncio.sleep(0.1)
-            dispatcher.utter_message(text="What would you like to do next?", buttons=buttons)
+            dispatcher.utter_message(text="What would you like to do next?", buttons=buttons, button_type="vertical")
 
             return []
         else:
@@ -953,7 +918,7 @@ class ActionExploreCity(Action):
             ]
 
             await asyncio.sleep(0.1)
-            dispatcher.utter_message(text="What would you like to do next (Hint: Talk to an NPC first)?", buttons=buttons)
+            dispatcher.utter_message(text="What would you like to do next (Hint: Talk to an NPC first)?", buttons=buttons, button_type="vertical")
 
             return []
             
@@ -1030,7 +995,7 @@ class ActionStartCombat(Action):
         ]
         
         # Mostra il messaggio della difficoltà e i bottoni di scelta
-        dispatcher.utter_message(text=f"Given your strenght, the difficulty has been reduced to {combat_difficulty}. {difficulty_message}", buttons=buttons)
+        dispatcher.utter_message(text=f"Given your strenght, the difficulty has been reduced to {combat_difficulty}. {difficulty_message}", buttons=buttons, button_type="vertical")
 
         # Imposta lo slot del mostro selezionato e la difficoltà
         return [SlotSet("combat_difficulty", combat_difficulty)]
@@ -1045,50 +1010,47 @@ class ActionContinueFighting(Action):
         
         # Estrazione di un numero casuale tra 1 e 20
         roll = random.randint(1, 20)
-        dispatcher.utter_message(text=f"You rolled a {roll}. The required difficulty is {difficulty}.")
+        dispatcher.utter_message(text=f"You rolled a {roll}. The required difficulty is {max(1, difficulty)}.")
 
         # Verifica se il combattimento è vinto o perso
         if roll >= difficulty:
             # Determina la ricompensa basata sulla difficoltà
             if difficulty <= 1.0:
                 gold_reward = 50.0
-                dispatcher.utter_message(text=f"You won the battle and earned {gold_reward} gold coins.")
                 # Bottoni di scelta
                 buttons = [
                 {"title": "Return to city", "payload": "/return_to_post_creation"},
                 ]
         
                 # Mostra il messaggio della difficoltà e i bottoni di scelta
-                dispatcher.utter_message(buttons=buttons)
+                dispatcher.utter_message(f"You won the battle and earned {gold_reward} gold coins.", buttons=buttons, button_type="vertical")
             
                 return [SlotSet("gold", tracker.get_slot("gold") + gold_reward), SlotSet("remaining_spells", None)]
             elif 1.0 < difficulty <= 5.0:
                 gold_reward = 100.0
-                dispatcher.utter_message(text=f"You won the battle and earned {gold_reward} gold coins.")
+
                 # Bottoni di scelta
                 buttons = [
                 {"title": "Return to city", "payload": "/return_to_post_creation"},
                 ]
         
                 # Mostra il messaggio della difficoltà e i bottoni di scelta
-                dispatcher.utter_message(buttons=buttons)
+                dispatcher.utter_message(f"You won the battle and earned {gold_reward} gold coins.", buttons=buttons, button_type="vertical")
             
                 return [SlotSet("gold", tracker.get_slot("gold") + gold_reward), SlotSet("remaining_spells", None)]
             elif 5.0 < difficulty <= 10.0:
                 gold_reward = 500.0
-                dispatcher.utter_message(text=f"You won the battle and earned {gold_reward} gold coins.")
                 # Bottoni di scelta
                 buttons = [
                 {"title": "Return to city", "payload": "/return_to_post_creation"},
                 ]
         
                 # Mostra il messaggio della difficoltà e i bottoni di scelta
-                dispatcher.utter_message(buttons=buttons)
+                dispatcher.utter_message(f"You won the battle and earned {gold_reward} gold coins.", buttons=buttons, button_type="vertical")
             
                 return [SlotSet("gold", tracker.get_slot("gold") + gold_reward),SlotSet("remaining_spells", None)]
             elif 10.0 < difficulty <= 15.0:
                 gold_reward = 1000.0
-                dispatcher.utter_message(text=f"You won the battle and earned {gold_reward} gold coins.")
                 # Bottoni di scelta
                 buttons = [
                 {"title": "Return to city", "payload": "/return_to_post_creation"},
@@ -1096,13 +1058,12 @@ class ActionContinueFighting(Action):
                 ]
         
                 # Mostra il messaggio della difficoltà e i bottoni di scelta
-                dispatcher.utter_message(buttons=buttons)
+                dispatcher.utter_message(f"You won the battle and earned {gold_reward} gold coins.", buttons=buttons, button_type="vertical")
 
                 return [SlotSet("gold", tracker.get_slot("gold") + gold_reward), SlotSet("remaining_spells", None)]            
         else:
             # Incrementa il contatore delle sconfitte
             defeat_counter += 1.0
-            dispatcher.utter_message(text="You lost the battle.")
             
             # Bottoni di scelta
             buttons = [
@@ -1110,7 +1071,7 @@ class ActionContinueFighting(Action):
             ]
         
             # Mostra il messaggio della difficoltà e i bottoni di scelta
-            dispatcher.utter_message(buttons=buttons)
+            dispatcher.utter_message("You lost the battle.", buttons=buttons, button_type="vertical")
                 
             # Controlla se il contatore delle sconfitte è pari a 3
             if defeat_counter == 3.0:
@@ -1126,31 +1087,34 @@ class ActionCastSpell(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         spells = tracker.get_slot("spells") or []
         remaining_spells = tracker.get_slot("remaining_spells") or spells.copy()
-        
-        # Controlla se ci sono incantesimi disponibili e se la lunghezza è inferiore a 7
-        if len(spells) == 0:
-            dispatcher.utter_message(text="You don't have any spells to cast. What do you want to do?")
-            # Bottoni di scelta
+
+        if not remaining_spells:
             buttons = [
                 {"title": "Continue fighting", "payload": "/continue_fighting"},
-                {"title": "Cast a spell", "payload": "/cast_spell"},
-                {"title": "Run away", "payload": "/return_to_post_creation"},
+                {"title": "Run away", "payload": "/return_to_post_creation"}
             ]
-        
-            # Mostra il messaggio della difficoltà e i bottoni di scelta
-            dispatcher.utter_message (buttons=buttons)
-            return [SlotSet("spells", spells)]
+            dispatcher.utter_message(text="You don't have any spells to cast. What do you want to do?", buttons=buttons, button_type="vertical")
+            return []
 
-        # Mostra i bottoni per selezionare un incantesimo
+        # Limita la lunghezza dei nomi e rimuove caratteri problematici
+        def clean_spell_name(spell):
+            cleaned_spell = re.sub(r'[^\w\s]', '', spell)  # Rimuove caratteri speciali
+            return cleaned_spell[:30]  # Taglia il nome a max 30 caratteri
+
+        # Crea bottoni con un ID univoco per ogni spell
         spell_buttons = [
-            {"title": spell, "payload": f'/select_spell{{"selected_spell": "{spell}"}}'}
+            {
+                "title": clean_spell_name(spell),
+                "payload": f'/select_spell{{"selected_spell": "{clean_spell_name(spell)}"}}'
+            }
             for spell in remaining_spells
         ]
-        
+
         spell_buttons.append({"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"})
-        dispatcher.utter_message(text="Select a spell to cast:", buttons=spell_buttons)
+
+        dispatcher.utter_message(text="Select a spell to cast:", buttons=spell_buttons, button_type="vertical")
         return []
-    
+        
 class ActionProcessSpell(Action):
     def name(self) -> Text:
         return "action_process_spell"
@@ -1161,55 +1125,44 @@ class ActionProcessSpell(Action):
         remaining_spells = tracker.get_slot("remaining_spells") or spells.copy()
 
         selected_spell = tracker.get_slot("selected_spell")
-        
-         # Controllo sulla lunghezza della lista temporanea delle spell
+
         if len(remaining_spells) < 8:
-            dispatcher.utter_message(text=f"You have consumed all your magic energies. No more spells can be cast. The difficulty is now {difficulty}. What do you want to do?")
             buttons = [
                 {"title": "Continue fighting", "payload": "/continue_fighting"},
                 {"title": "Run away", "payload": "/return_to_post_creation"},
-                
             ]
-            
-            dispatcher.utter_message(buttons=buttons)
+            dispatcher.utter_message(text = f"You have consumed all your magic energies. No more spells can be cast. The difficulty is now {difficulty}. What do you want to do?", buttons=buttons, button_type="vertical")
             return [SlotSet("remaining_spells", None)]
 
-        # Se l'incantesimo selezionato non è valido o non esiste nella lista temporanea
+        # Se l'incantesimo selezionato non è valido
         if not selected_spell or selected_spell not in remaining_spells:
-            dispatcher.utter_message(text="Invalid spell selected or the spell is no longer available.")
             buttons = [
                 {"title": "Continue fighting", "payload": "/continue_fighting"},
                 {"title": "Cast a spell", "payload": "/cast_spell"},
                 {"title": "Run away", "payload": "/return_to_post_creation"},
-               
             ]
-            dispatcher.utter_message(buttons=buttons)
+            dispatcher.utter_message(text = "Invalid spell selected or the spell is no longer available.", buttons=buttons, button_type="vertical")
             return []
 
-        # Conferma l'uso dell'incantesimo e rimuove la spell dalla lista temporanea
+        # Rimuove la spell dalla lista temporanea e aggiorna la difficoltà
         dispatcher.utter_message(text=f"You cast {selected_spell}. The difficulty decreases by 1.")
-        remaining_spells.remove(selected_spell)  # Rimuove la spell solo dalla lista temporanea
+        remaining_spells.remove(selected_spell)
 
-        # Mostra i bottoni delle spell rimanenti o torna al menu
+        # Se ci sono altre spell disponibili, mostra i bottoni aggiornati
         if remaining_spells:
             spell_buttons = [
                 {"title": spell, "payload": f'/select_spell{{"selected_spell": "{spell}"}}'}
                 for spell in remaining_spells
             ]
-            
             spell_buttons.append({"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"})
-            dispatcher.utter_message(text="Select another spell or return to the fight:", buttons=spell_buttons)
-        
+            dispatcher.utter_message(text="Select another spell or return to the fight:", buttons=spell_buttons, button_type="vertical")
         else:
-            dispatcher.utter_message(text="No spells left to cast. You must continue fighting.")
             buttons = [
                 {"title": "Continue fighting", "payload": "/continue_fighting"},
                 {"title": "Run away", "payload": "/return_to_post_creation"},
-                {"title": "Write your action (/help for commands)", "payload": "/custom_input_prompt"}
             ]
-            dispatcher.utter_message(buttons=buttons)
+            dispatcher.utter_message(text ="No spells left to cast. You must continue fighting.", buttons=buttons, button_type="vertical")
 
-        # Aggiorna la difficoltà e salva la lista temporanea delle spell rimanenti
         return [
             SlotSet("combat_difficulty", max(1, difficulty - 1)),
             SlotSet("remaining_spells", remaining_spells)

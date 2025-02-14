@@ -180,6 +180,14 @@ slots:
     mappings:
       - type: from_entity
         entity: selected_spell  
+  spell_count:
+    type: float
+    initial_value: 0.0
+    influence_conversation: false
+    mappings:
+      - type: from_intent
+        value: 0.0
+        intent: character_creation     
   combat_difficulty:
     type: float
     influence_conversation: true 
@@ -199,7 +207,7 @@ slots:
     mappings:
       - type: from_entity
         entity: remaining_spells  
-
+  
 responses:
   utter_start:
     - text: |
@@ -210,8 +218,7 @@ responses:
         To get started, type **/help** for a list of commands or just type **play** and begin your journey into a world full of danger, treasures, and magic. ✨
   
   utter_default_fallback:
-    - text: "Sorry, I didn't understand that. Can you rephrase?"
-
+    - text: "I'm sorry, I didn't understand that. Please try again or type /help for available commands."
   utter_greet:
     - text: "Hi there adventurer! How can I assist you today?"
 
@@ -297,6 +304,7 @@ responses:
         You will discover the rest by playing!
   utter_post_character_creation:
     - text: "What do you want to do next?"
+      button_type: vertical
       buttons:
         - title: "Talk to NPC"
           payload: "/talk_to_npc"

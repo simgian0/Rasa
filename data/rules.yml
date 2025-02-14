@@ -129,3 +129,8 @@ rules:
   steps:
     - intent: help
     - action: action_help
+    
+- rule: Handle fallback
+  steps:
+  - intent: nlu_fallback
+  - action: utter_default_fallback
