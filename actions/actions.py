@@ -1007,6 +1007,11 @@ class ActionContinueFighting(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         difficulty = tracker.get_slot("combat_difficulty")
         defeat_counter = tracker.get_slot("defeat_counter") or 0
+        player_level = tracker.get_slot("level")
+        
+        if player_level is None:
+            dispatcher.utter_message(text="I need to know your level before we start the combat. Return to character creation first!")
+            return []
         
         # Estrazione di un numero casuale tra 1 e 20
         roll = random.randint(1, 20)
