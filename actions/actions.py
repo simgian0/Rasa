@@ -1092,7 +1092,12 @@ class ActionCastSpell(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         spells = tracker.get_slot("spells") or []
         remaining_spells = tracker.get_slot("remaining_spells") or spells.copy()
-
+        player_level = tracker.get_slot("level")  
+              
+        if player_level is None:
+            dispatcher.utter_message(text="I need to know your level before we start the combat. Return to character creation first!")
+            return []
+        
         if not remaining_spells:
             buttons = [
                 {"title": "Continue fighting", "payload": "/continue_fighting"},
