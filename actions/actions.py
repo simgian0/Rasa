@@ -17,7 +17,7 @@ DATASET_CHARACTER_PATH = "/home/arthas0130/Rasa/Dataset DnD/over_one_mil_chars.c
 DATASET_SPELLS_PATH = "/home/arthas0130/Rasa/Dataset DnD/dnd-spells.csv"
 DATASET_EQUIPS_PATH = "/home/arthas0130/Rasa/Dataset DnD/dndbeyond_equips.csv"
 DATASET_FAERUN_PATH = "/home/arthas0130/Rasa/Dataset DnD/Countries of Faerun.csv"
-DATASET_MONSTER_FILTERED = "/home/arthas0130/Rasa/actions/Dataset/dnd_monsters_filtered.csv"
+DATASET_MONSTER_FILTERED = "/home/arthas0130/Rasa/Dataset DnD/dnd_monsters_filtered.csv"
     
 SERPAPI_API_KEY = "9a7de92580d0789996224397085372b3096e4b04abfc5fe58ddf44fb5cbd1347"
 
