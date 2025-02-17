@@ -1,0 +1,9 @@
+https://www.kaggle.com/datasets/mrpantherson/dnd-5e-monsters --> dnd_monsters
+
+https://www.kaggle.com/datasets/patrickgomes/equips-in-dungeons-and-dragons-beyond --> dndbeyond_equips
+
+https://www.kaggle.com/datasets/mrpantherson/dndspells --> dnd-spells
+
+https://www.kaggle.com/datasets/maximebonnin/dnd-characters-test --> over_one_mil_chars
+
+https://docs.google.com/spreadsheets/d/1-BHbJDJoNctMfgRNIMsTmpfDB_cxL2xjocxl6B2LEHg/edit?gid=0#gid=0 --> Countries of Faerun
