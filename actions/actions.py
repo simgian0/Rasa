@@ -227,8 +227,9 @@ class ActionCharacterCreation(Action):
                 # Carica il dataset degli incantesimi
                 spells_df = pd.read_csv(DATASET_SPELLS_PATH)
 
+                filtered_spells_df = spells_df[spells_df["name"].str.len() <= 25]  # Filtra le spell con nome <= 25 caratteri
                 # Seleziona 10 incantesimi casuali e rimuove le parentesi tonde dai nomi
-                random_spells = spells_df.sample(n=10)["name"].str.replace(r"[()]", "", regex=True).tolist()
+                random_spells = filtered_spells_df.sample(n=10)["name"].str.replace(r"[()]", "", regex=True).tolist()
 
                 # Aggiungi gli incantesimi al messaggio
                 spells_message = "\nYour spells are:\n- " + "\n- ".join(random_spells)
@@ -1109,7 +1110,7 @@ class ActionCastSpell(Action):
         # Limita la lunghezza dei nomi e rimuove caratteri problematici
         def clean_spell_name(spell):
             cleaned_spell = re.sub(r'[^\w\s]', '', spell)  # Rimuove caratteri speciali
-            return cleaned_spell[:30]  # Taglia il nome a max 30 caratteri
+            return cleaned_spell[:25]  # Taglia il nome a max 30 caratteri
 
         # Crea bottoni con un ID univoco per ogni spell
         spell_buttons = [
